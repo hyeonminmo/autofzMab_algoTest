@@ -1309,12 +1309,15 @@ class Schedule_Autofz(Schedule_Base):
         logger.debug(f'focus elasp: {focus_elasp} seconds')
 
         #logger.info(f'main 029 - focus_elasp : { focus_elasp }')
-        logger.info(f'main 029 - previous_bitmap: {previous_bitmap}, current_bitmap: {current_bitmap}, diff_threshold: {self.diff_threshold}')
 
         self.find_new_round = find_new
 
         after_focus_fuzzer_info = get_fuzzer_info(self.fuzzers)
         logger.debug(f'focused_round: {self.focused_round}')
+
+
+        current_bitmap = after_focus_fuzzer_info['global_bitmap'].count()
+        logger.info(f'main 029 - previous_bitmap: {previous_bitmap}, current_bitmap: {current_bitmap}, diff_threshold: {self.diff_threshold}     ')
 
         bug_info = after_focus_fuzzer_info['global_unique_bugs']
         logger.info(f'main 030 - round {self.round_num} end result - bug : {bug_info}')
@@ -1326,7 +1329,6 @@ class Schedule_Autofz(Schedule_Base):
             self.tsFuzzers[fuzzer].prep_runTime = 0
             self.tsFuzzers[fuzzer].focus_runTime = 0
 
-        current_bitmap = after_focus_fuzzer_info['global_bitmap'].count()
         #logger.info(f"after_info : {after_focus_fuzzer_info['bitmap']}")
 
         # update fuzzer count criteria
