@@ -807,6 +807,8 @@ class Schedule_Base(SchedulingAlgorithm):
             previous_fuzzer_info = current_fuzzer_info
             prep_round+=1
 
+            do_sync(self.fuzzers,OUTPUT)
+
 
 #            self.has_winner_round = self.has_winner()
             # NOTE: early exit!
