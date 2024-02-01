@@ -773,9 +773,9 @@ class Schedule_Base(SchedulingAlgorithm):
 
         while remain_time > 0:
             '''
-            run 30 seconds for each fuzzer and see whether there is a winner
+            run 60 seconds for each fuzzer and see whether there is a winner
             '''
-            run_time = min(remain_time, 15)
+            run_time = min(remain_time, 60)
             for prep in self.prep_fuzzers:
                 self.run_one(prep)
                 self.prep_wait(run_time)
@@ -1241,6 +1241,7 @@ class Schedule_Autofz(Schedule_Base):
                 fuzzer_threshold_sum += self.tsFuzzers[fuzzer].threshold
                 logger.info(f'main 044 - preparation  end result - fuzzer : { fuzzer }, fuzzer_success : { self.tsFuzzers[fuzzer].S }, fuzzer_fail : { self.tsFuzzers[fuzzer].F }, fuzzer run time_prep : {self.prep_time}, fuzzer threshold : {self.tsFuzzers[fuzzer].threshold}')
             fuzzer_threshold_av = int(fuzzer_threshold_sum/len(FUZZERS))
+            logger.info(f'main 200 - fuzzer_threshold_av : {fuzzer_threshold_av}')
             self.diff_threshold = fuzzer_threshold_av
 
         
@@ -1388,7 +1389,7 @@ class Schedule_Autofz(Schedule_Base):
         logger.info(f'main 030 - round {self.round_num} end result - bug : {bug_info}')
 
         for fuzzer in FUZZERS:
-            self.tsFuzzers[fuzzer].stack += 40
+            self.tsFuzzers[fuzzer].stack += 1
             logger.info(f'main 031 - round {self.round_num} end result - fuzzer : { fuzzer }, fuzzer_success : { self.tsFuzzers[fuzzer].S }, fuzzer_fail : { self.tsFuzzers[fuzzer].F }, fuzzer run time " {self.tsFuzzers[fuzzer].total_runTime}, fuzzer stack : {self.tsFuzzers[fuzzer].stack}')
 
         #assert (self.dynamic_prep_time_round + self.dynamic_focus_time_round) == (self.prep_time + self.focus_time)

@@ -30,8 +30,9 @@ def updateFuzzerCount(tsfuzzer, selected_fuzzers, criteria):
         if criteria == 1:
             fuzzer.S = fuzzer.S + 1 + fuzzer.stack
             logger.info(f'thomps 003 - {fuzzer} is success')
+            fuzzer.stack = 0
         else:
-            fuzzer.F = fuzzer.F + 1
+            fuzzer.F = fuzzer.F + 1 + int(fuzzer.stack*0.5)
             logger.info(f'thomps 004 - {fuzzer} is fail')
 
 def updateFuzzerCountPrep(tsfuzzer, selected_fuzzer, criteria):
