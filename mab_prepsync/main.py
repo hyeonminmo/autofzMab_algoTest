@@ -806,6 +806,7 @@ class Schedule_Base(SchedulingAlgorithm):
             previous_fuzzer_info = current_fuzzer_info
             prep_round+=1
 
+            global OUTPUT
             do_sync(self.fuzzers,OUTPUT)
 
 

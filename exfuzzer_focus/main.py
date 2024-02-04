@@ -873,13 +873,47 @@ class Schedule_Base(SchedulingAlgorithm):
         logger.debug(f"cpu_assign: {new_cpu_assign}")
         logger.debug(f"sorted_cpu_assign: {sorted_cpu_assign}")
         logger.debug(f"focus_fuzzer_time: {focus_fuzzer_cpu_time}")
+
+        focusFail = 0
+
+        focusBeforeInfo = get_fuzzer_info(self.fuzzers)
+
+        previousBitmap = focusBeforeInfo['global_bitmap'].count()
+        previousBug = focusBeforeInfo['global_unique_bugs']['unique_bugs']
+
+        focusThreshold = self.diff_threshold/10
+
         for fuzzer in run_fuzzers:
             t = focus_fuzzer_cpu_time[fuzzer]
-            self.tsFuzzers[fuzzer].total_runTime += t
             logger.info(f'main 011 - focus {fuzzer} runTime :{t}')
             logger.debug(f"focus_cpu_assign: {fuzzer}, time: {t}")
-            self.run_one(fuzzer)
-            sleep(t)
+            focusRemainTime = t
+            focusRound = 1
+            
+            while focusRemainTime > 0 :
+                focusRunTime = min(focusRemainTime, 60)
+                self.run_one(fuzzer)
+                sleep(focuRunTime)
+
+                self.tsFuzzers[fuzzer].total_runTime += focusRunTime
+                focusRoundInfo = get_fuzzer_info(self.fuzzers)
+                currentBitmap = focusRoundInfo['bitmap'][fuzzer].count()
+                currentBug = focusRoundInfo['unique_bugs'][fuzzer]
+                logger.info(f'main 501 - focus round : {focusRound} end result - previousBitmap : {previousBitmap}, currentBitmap : {currentBitmap}, previousBug : {previousBug}, currentBug : {currentBug}, focusThreshold : {focusThreshold}, focusFail : {focusFail}')
+
+
+                # Evaluation
+                if currentBitmap - previousBitmap > focusThreshold  or currentBug - previousBug >0:
+                    thompson.updateFuzzerCount(self.tsFuzzers,run_fuzzers,1)
+                else:
+                    thompson.updateFuzzerCount(self.tsFuzzers,run_fuzzers,0)
+                    focusFail += 1
+                previousBitmap = currentBitmap
+                previousBitmap = currentBug
+                
+                # 300s
+                if focusFail == 5:
+                    break
             # we can sync infinitely in focus session
             # optimization: only sync between run_fuzzers
             do_sync(run_fuzzers, OUTPUT)
@@ -1376,17 +1410,17 @@ class Schedule_Autofz(Schedule_Base):
 
         if self.round_num == 1:
             if current_bitmap - preparation_bitmap > self.diff_threshold or current_unique_bug - preparation_unique_bug > 0:
-                thompson.updateFuzzerCount(self.tsFuzzers, selected_fuzzers, 1)
+               # thompson.updateFuzzerCount(self.tsFuzzers, selected_fuzzers, 1)
                 self.diff_threshold += self.diff_threshold_base
             else:
-                thompson.updateFuzzerCount(self.tsFuzzers, selected_fuzzers, 0)
+               # thompson.updateFuzzerCount(self.tsFuzzers, selected_fuzzers, 0)
                 self.diff_threshold *= 0.5
         else:
             if current_bitmap - previous_bitmap > self.diff_threshold or current_unique_bug - previous_unique_bug > 0:
-                thompson.updateFuzzerCount(self.tsFuzzers, selected_fuzzers, 1)
+               # thompson.updateFuzzerCount(self.tsFuzzers, selected_fuzzers, 1)
                 self.diff_threshold += self.diff_threshold_base
             else:
-                thompson.updateFuzzerCount(self.tsFuzzers, selected_fuzzers, 0)
+               # thompson.updateFuzzerCount(self.tsFuzzers, selected_fuzzers, 0)
                 self.diff_threshold *= 0.5
 
         bug_info = after_focus_fuzzer_info['global_unique_bugs']
