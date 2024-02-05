@@ -901,8 +901,6 @@ class Schedule_Base(SchedulingAlgorithm):
                 focusRoundInfo = get_fuzzer_info(self.fuzzers)
                 currentBitmap = focusRoundInfo['bitmap'][fuzzer].count()
                 currentBug = focusRoundInfo['unique_bugs'][fuzzer]['unique_bugs']
-                logger.info(f'main 501 - focus round : {focusRound} end result - previousBitmap : {previousBitmap}, currentBitmap : {currentBitmap}, previousBug : {previousBug}, currentBug : {currentBug}, focusThreshold : {focusThreshold}, focusFail : {focusFail}')
-
 
                 # Evaluation
                 if currentBitmap - previousBitmap > focusThreshold  or currentBug - previousBug >0:
@@ -913,9 +911,9 @@ class Schedule_Base(SchedulingAlgorithm):
                     thompson.updateFuzzerCountPrep(self.tsFuzzers,fuzzer,0)
                     focusFail += 1
 
-                logger.info(f'main 502 - focus round : {focusRound}end result - fuzzer : {fuzzer}, previousBitmap : {previousBitmap}, currentBitmap : {currentBitmap}, previousBug : {previousBug}, currentBug : {currentBug}, focusSuccess : {focusSuccess}, focusFail : {focusFail}, fuzzer success :  {self.tsFuzzers[fuzzer].S}, fuzzer fail : {self.tsFuzzers[fuzzer].F}, focusThreshold : {focusThreshold}')
+                logger.info(f'main 501 - focus round : {focusRound}end result - fuzzer : {fuzzer}, previousBitmap : {previousBitmap}, currentBitmap : {currentBitmap}, previousBug : {previousBug}, currentBug : {currentBug}, focusSuccess : {focusSuccess}, focusFail : {focusFail}, fuzzer success :  {self.tsFuzzers[fuzzer].S}, fuzzer fail : {self.tsFuzzers[fuzzer].F}, focusThreshold : {focusThreshold}')
                 previousBitmap = currentBitmap
-                previousBitmap = currentBug
+                previousBug = currentBug
 
                 # 300s
                 if focusFail == 5:
