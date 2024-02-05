@@ -908,11 +908,12 @@ class Schedule_Base(SchedulingAlgorithm):
                 if currentBitmap - previousBitmap > focusThreshold  or currentBug - previousBug >0:
                     thompson.updateFuzzerCountPrep(self.tsFuzzers,fuzzer,1)
                     focusFail = 0
+                    focusSuccess += 1
                 else:
                     thompson.updateFuzzerCountPrep(self.tsFuzzers,fuzzer,0)
                     focusFail += 1
 
-                logger.info(f'main 502 - focus round : {focusRound}end result - fuzzer : {fuzzer}, focusSuccess : {focusSuccess}, focusFail : {focusFail}, fuzzer success :  {self.tsfuzzers[fuzzer].S}, fuzzer fail : {self.tsfuzzers[fuzzer].F}')
+                logger.info(f'main 502 - focus round : {focusRound}end result - fuzzer : {fuzzer}, previousBitmap : {previousBitmap}, currentBitmap : {currentBitmap}, previousBug : {previousBug}, currentBug : {currentBug}, focusSuccess : {focusSuccess}, focusFail : {focusFail}, fuzzer success :  {self.tsFuzzers[fuzzer].S}, fuzzer fail : {self.tsFuzzers[fuzzer].F}, focusThreshold : {focusThreshold}')
                 previousBitmap = currentBitmap
                 previousBitmap = currentBug
 
