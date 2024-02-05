@@ -29,18 +29,18 @@ def updateFuzzerCount(tsfuzzer, selected_fuzzers, criteria):
         fuzzer = tsfuzzer[selected_fuzzer]
         if criteria == 1:
             fuzzer.S = fuzzer.S + 1 + fuzzer.stack
-            logger.info(f'thomps 003 - {fuzzer} is success')
+            logger.info(f'thomps 003 - {selected_fuzzers[0]} is success')
             fuzzer.stack = 0
         else:
             fuzzer.F = fuzzer.F + 1 + int(fuzzer.stack*0.5)
-            logger.info(f'thomps 004 - {fuzzer} is fail')
+            logger.info(f'thomps 004 - {selected_fuzzers[0]} is fail')
 
 def updateFuzzerCountPrep(tsfuzzer, selected_fuzzer, criteria):
     fuzzer = tsfuzzer[selected_fuzzer]
     if criteria == 1:
         fuzzer.S = fuzzer.S + 1
-        logger.info(f'thomps 005 - {fuzzer} is success')
+        logger.info(f'thomps 005 - {selected_fuzzer} is success')
     else:
         fuzzer.F = fuzzer.F + 1
-        logger.info(f'thomps 006 - {fuzzer} is fail')
+        logger.info(f'thomps 006 - {selected_fuzzer} is fail')
     

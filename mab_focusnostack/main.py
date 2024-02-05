@@ -875,6 +875,7 @@ class Schedule_Base(SchedulingAlgorithm):
         logger.debug(f"focus_fuzzer_time: {focus_fuzzer_cpu_time}")
 
         focusFail = 0
+        focusSuccess = 0
 
         focusBeforeInfo = get_fuzzer_info(self.fuzzers)
 
@@ -905,13 +906,13 @@ class Schedule_Base(SchedulingAlgorithm):
 
                 # Evaluation
                 if currentBitmap - previousBitmap > focusThreshold  or currentBug - previousBug >0:
-                    thompson.updateFuzzerCountPrep(self.tsFuzzers,run_fuzzers,1)
+                    thompson.updateFuzzerCountPrep(self.tsFuzzers,fuzzer,1)
                     focusFail = 0
                 else:
-                    thompson.updateFuzzerCountPrep(self.tsFuzzers,run_fuzzers,0)
+                    thompson.updateFuzzerCountPrep(self.tsFuzzers,fuzzer,0)
                     focusFail += 1
 
-                logger.info(f'main 502 - focus round : {focusRound}end result - fuzzer : {fuzzer}, focusFail : {focusFail}, fuzzer success :  {self.tsfuzzers[fuzzer].S}, fuzzer fail : {self.tsfuzzers[fuzzer].F}')
+                logger.info(f'main 502 - focus round : {focusRound}end result - fuzzer : {fuzzer}, focusSuccess : {focusSuccess}, focusFail : {focusFail}, fuzzer success :  {self.tsfuzzers[fuzzer].S}, fuzzer fail : {self.tsfuzzers[fuzzer].F}')
                 previousBitmap = currentBitmap
                 previousBitmap = currentBug
 
