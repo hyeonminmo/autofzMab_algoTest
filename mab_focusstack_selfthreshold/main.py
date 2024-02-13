@@ -616,6 +616,7 @@ def fuzzer_bitmap_diff(fuzzers, before_fuzzer_info, after_fuzzer_info):
     after_bitmap = after_fuzzer_info['bitmap']
     bitmap_diff = {}
     for fuzzer in fuzzers:
+        logger.info(f'main 601 - prep bitmap diff - before_bitmap : { before_global_bitmap}, after_bitmap : { after_bitmap[fuzzer]}') 
         bitmap_diff[fuzzer] = after_bitmap[fuzzer] - before_global_bitmap
     return bitmap_diff
 
@@ -904,16 +905,18 @@ class Schedule_Base(SchedulingAlgorithm):
 
                 # Evaluation
                 if currentBitmap - previousBitmap > self.tsFuzzers[fuzzer].threshold  or currentBug - previousBug >0:
-                    thompson.updateFuzzerCountPrep(self.tsFuzzers,fuzzer,1)
+                    thompson.updateFuzzerCount(self.tsFuzzers,run_fuzzers,1)
                     focusFail = 0
                     focusSuccess += 1
+                    #focusRemainTime += t
                     self.tsFuzzers[fuzzer].threshold *= 2
                 else:
-                    thompson.updateFuzzerCountPrep(self.tsFuzzers,fuzzer,0)
+                    thompson.updateFuzzerCount(self.tsFuzzers,run_fuzzers,0)
                     focusFail += 1
+                    self.tsFuzzers[fuzzer].stack += 1
                     self.tsFuzzers[fuzzer].threshold *= 0.5
 
-                logger.info(f'main 501 - focus round : {focusRound}end result - fuzzer : {fuzzer}, previousBitmap : {previousBitmap}, currentBitmap : {currentBitmap}, previousBug : {previousBug}, currentBug : {currentBug}, focusSuccess : {focusSuccess}, focusFail : {focusFail}, fuzzer success :  {self.tsFuzzers[fuzzer].S}, fuzzer fail : {self.tsFuzzers[fuzzer].F}, focusThreshold : {self.tsFuzzers[fuzzer].threshold}')
+                logger.info(f'main 501 - focus round : {focusRound}end result - fuzzer : {fuzzer}, previousBitmap : {previousBitmap}, currentBitmap : {currentBitmap}, previousBug : {previousBug}, currentBug : {currentBug}, focusSuccess : {focusSuccess}, focusFail : {focusFail}, fuzzer success :  {self.tsFuzzers[fuzzer].S}, fuzzer fail : {self.tsFuzzers[fuzzer].F}, focusThreshold : {self.tsFuzzers[fuzzer].threshold}, fuzzer stack : {self.tsFuzzers[fuzzer].stack}')
                 previousBitmap = currentBitmap
                 previousBug = currentBug
 
@@ -1434,7 +1437,7 @@ class Schedule_Autofz(Schedule_Base):
         logger.info(f'main 030 - round {self.round_num} end result - bug : {bug_info}')
 
         for fuzzer in FUZZERS:
-            self.tsFuzzers[fuzzer].stack += 1
+            #self.tsFuzzers[fuzzer].stack += 1
             logger.info(f'main 031 - round {self.round_num} end result - fuzzer : { fuzzer }, fuzzer_success : { self.tsFuzzers[fuzzer].S }, fuzzer_fail : { self.tsFuzzers[fuzzer].F }, fuzzer run time " {self.tsFuzzers[fuzzer].total_runTime}, fuzzer stack : {self.tsFuzzers[fuzzer].stack}')
 
         #assert (self.dynamic_prep_time_round + self.dynamic_focus_time_round) == (self.prep_time + self.focus_time)
