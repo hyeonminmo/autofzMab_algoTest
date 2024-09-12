@@ -1241,8 +1241,8 @@ class Schedule_Autofz(Schedule_Base):
         self.prep_fuzzers = prep_fuzzers
 
         logger.info(f'main 1100 - preparation round {self.round_num} start')
-        before_prep_bitmap = before_prep_fuzzer_info['global_bitmap'].count()
-        before_prep_unique_crash = before_prep_fuzzer_info['global_unique_bugs']['unique_bugs']
+        before_prep_bitmap = self.before_prep_fuzzer_info['global_bitmap'].count()
+        before_prep_unique_crash = self.before_prep_fuzzer_info['global_unique_bugs']['unique_bugs']
 
         # preparation phase - 3 step
         # check early exit condition
