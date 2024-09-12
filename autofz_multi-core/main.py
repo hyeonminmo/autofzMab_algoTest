@@ -1259,7 +1259,7 @@ class Schedule_Autofz(Schedule_Base):
         after_prep_bitmap = after_prep_fuzzer_info['global_bitmap'].count()
         after_prep_unique_crash = after_prep_fuzzer_info['global_unique_bugs']['unique_bugs']
 
-        logger.info(f'main 1103 - preparation round {self.round_num} end result - before_prep_bitmap : { before_prep_bitmap}, after_prep_bitmap : {after_prep_bitmap}, before_prep_unique_crash : { before_unique_crash}, after_prep_unique_crash : {after_prep_unique_crash}')
+        logger.info(f'main 1103 - preparation round {self.round_num} end result - before_prep_bitmap : { before_prep_bitmap}, after_prep_bitmap : {after_prep_bitmap}, before_prep_unique_crash : { before_prep_unique_crash}, after_prep_unique_crash : {after_prep_unique_crash}')
 
         logger.debug(f'after_fuzzer_info: {after_prep_fuzzer_info}')
 
@@ -1350,7 +1350,7 @@ class Schedule_Autofz(Schedule_Base):
         after_focus_bitmap = after_focus_fuzzer_info['global_bitmap'].count()
         after_focus_unique_crash = after_focus_fuzzer_info['global_unique_bugs']['unique_bugs']
 
-        logger,info(f'main 1109 - focus round {self.round_num} end result - before_focus_bitmap : { after_prep_bitmap}, after_focus_bitmap : {after_focus_bitmap}, before_focus_unique_crash : { after_prep_unique_crash}, after_focus_unique_crash : {after_focus_unique_crash} ')
+        logger.info(f'main 1109 - focus round {self.round_num} end result - before_focus_bitmap : { after_prep_bitmap}, after_focus_bitmap : {after_focus_bitmap}, before_focus_unique_crash : { after_prep_unique_crash}, after_focus_unique_crash : {after_focus_unique_crash} ')
 
 
         for fuzzer in FUZZERS:
