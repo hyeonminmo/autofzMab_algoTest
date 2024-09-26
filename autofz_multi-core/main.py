@@ -823,6 +823,7 @@ class Schedule_Base(SchedulingAlgorithm):
             current_fuzzer_info = get_fuzzer_info(self.fuzzers)
 
             for fuzzer in FUZZERS:
+                self.tsFuzzers[fuzzer].prep_runTime += run_time
                 previous_bitmap = previous_fuzzer_info['bitmap'][fuzzer].count()
                 previous_unique_crash = previous_fuzzer_info['unique_bugs'][fuzzer]['unique_bugs']
                 current_bitmap = current_fuzzer_info['bitmap'][fuzzer].count()
@@ -897,6 +898,7 @@ class Schedule_Base(SchedulingAlgorithm):
 
         for fuzzer, new_cpu in new_cpu_assign.items():
             update_fuzzer_limit(fuzzer, new_cpu)
+            self.tsFuzzers[fuzzer].focus_runTime += focus_time
         for fuzzer in FUZZERS:
             if fuzzer not in new_cpu_assign:
                 update_fuzzer_limit(fuzzer, 0)
