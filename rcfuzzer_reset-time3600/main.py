@@ -391,6 +391,7 @@ def resume(fuzzer, jobs=1, input_dir=None, empty_seed=False):
 
 
 def do_sync(fuzzers: Fuzzers, host_root_dir: Path) -> bool:
+    logger.info('main 2000 - seed sync')
     logger.debug('do sync once')
     fuzzer_info = maybe_get_fuzzer_info(fuzzers)
     if not fuzzer_info:
@@ -1111,7 +1112,7 @@ class Schedule_RCFuzz(Schedule_Base):
     def execution(self):
         round_start_time = time.time()
         global OUTPUT
-        do_sync(self.fuzzers, OUTPUT)
+        #do_sync(self.fuzzers, OUTPUT)
 
         before_execution_fuzzer_info = get_fuzzer_info(self.fuzzers)
 
@@ -1173,7 +1174,8 @@ class Schedule_RCFuzz(Schedule_Base):
             self.execution()
             logger.info(f'main 804 - execution phase round {self.round_num} end')
             #reset
-            if self.roundTime >= 3600:
+            if self.roundTime >= 3600 :
+                self.roundTime =0 
                 do_sync(self.fuzzers,OUTPUT)
                 for fuzzer in FUZZERS:
                     self.rcFuzzers[fuzzer].S = 1

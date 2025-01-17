@@ -1112,7 +1112,7 @@ class Schedule_RCFuzz(Schedule_Base):
     def execution(self):
         round_start_time = time.time()
         global OUTPUT
-        do_sync(self.fuzzers, OUTPUT)
+        #do_sync(self.fuzzers, OUTPUT)
 
         before_execution_fuzzer_info = get_fuzzer_info(self.fuzzers)
 
@@ -1175,6 +1175,7 @@ class Schedule_RCFuzz(Schedule_Base):
             logger.info(f'main 804 - execution phase round {self.round_num} end')
             #reset
             if self.round_num % 20 == 0 :
+                self.roundTime =0 
                 do_sync(self.fuzzers,OUTPUT)
                 for fuzzer in FUZZERS:
                     self.rcFuzzers[fuzzer].S = 1
