@@ -270,13 +270,14 @@ cd /autofz_bench/unibench/jasper-2.0.12 && cmake -DJAS_ENABLE_SHARED=OFF -DALLOW
         make clean && cd /autofz_bench/unibench/libpcap-1.8.1 && make clean
 } &
 
-cd /autofz_bench/magma && \
+cd /autofz_bench/magma &&\
     ls *.zip|xargs -i unzip -q '{}' &&\
     ls -alh
 
 magma_targets=(
     lua
 )
+
 for magma_target in "${magma_targets[@]}";
 
 do
@@ -285,16 +286,21 @@ do
 done
 
 {
-    cd /autofz_bench/magma/lua && \
-        make -j clean && \
-        make -j liblua.a && \
+     cd /autofz_bench/magma/lua && \
+        make -j clean && make -j liblua.a && \
+        cp liblua.a /d/p/justafl/magma/lua/liblua.a && \
         make -j lua && \
-        cp lua /d/p/justafl/magma/lua && \
+        cp lua /d/p/justafl/magma/lua/lua && \
         make -j clean && AFL_USE_ASAN=1 make -j liblua.a && \
+        cp liblua.a /d/p/aflasan/magma//lua/liblua.a && \
         AFL_USE_ASAN=1 make -j lua && \
-        cp lua /d/p/aflasan/magma/lua &&\
+        cp lua /d/p/aflasan/magma/lua/lua && \
         make clean
 } &
+
+
+
+
 
 
 wait
