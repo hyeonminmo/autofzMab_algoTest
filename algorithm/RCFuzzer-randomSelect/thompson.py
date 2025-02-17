@@ -1,5 +1,6 @@
 import numpy as np
 import logging
+import random
 
 logger = logging.getLogger('autofz.thompson')
 
@@ -20,7 +21,7 @@ def selectFuzzer(fuzzers):
     #    logger.info(f'thomps 001 - Success: { value.S }, Fail : {value.F}, Prob: { value.prob }')
 
     #max_prob_fuzzer = max(fuzzers, key=lambda key: fuzzers[key].prob)
-    randomSelectFuzzer = random.choice(fuzzers)
+    randomSelectFuzzer = random.choice(list(fuzzers.keys())
 
     selectedFuzzers.append(randomSelectFuzzer)
 
